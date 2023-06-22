@@ -105,4 +105,37 @@ function filter(e) {
             done === null || done === void 0 ? void 0 : done.classList.add("taskClick");
         }
     }
+    filterList = [];
+    if (mode == "ongoing") {
+        for (let i = 0; i < taskList.length; i++) {
+            if (taskList[i].isComplete == false) {
+                filterList.push(taskList[i]);
+            }
+        }
+    }
+    else if (mode == "done") {
+        for (let i = 0; i < taskList.length; i++) {
+            if (taskList[i].isComplete) {
+                filterList.push(taskList[i]);
+            }
+        }
+    }
+    render();
+}
+function toggleComplete(id) {
+    for (let i = 0; i < taskList.length; i++) {
+        if (taskList[i].id == id) {
+            taskList[i].isComplete = !taskList[i].isComplete;
+            break;
+        }
+    }
+    filter();
+}
+function deleteTask(id) {
+    for (let i = 0; i < taskList.length; i++) {
+        if (taskList[i].id == id) {
+            taskList.splice(i, 1);
+        }
+    }
+    filter();
 }

@@ -15,14 +15,6 @@ const all = document.querySelector<HTMLDivElement>("#all");
 const onGoing = document.querySelector<HTMLDivElement>("#ongoing");
 const done = document.querySelector<HTMLDivElement>("#done");
 
-addBtn?.addEventListener("click", addTask);
-
-taskInput?.addEventListener("keyup", (e) => {
-  if (e.keyCode === 13) {
-    addTask();
-  }
-});
-
 function randomId() {
   return "_" + Math.random().toString(36).substring(2, 9);
 }
@@ -38,34 +30,34 @@ function render() {
   for (let i = 0; i < list.length; i++) {
     if (list[i].isComplete == true) {
       resultHTML += `
-        <div class="task">
-        <div class="taskTitle">
-          <div class="title taskDone" >${list[i].taskContent}</div>
-        </div>
-        <div class="taskBtns">
-          <button class="checkBtn" onClick="toggleComplete('${list[i].id}')">
-          <i class="fa-sharp fa-solid fa-rotate-right rotate"></i>
-          </button>
-          <button class="removeBtn" onClick="deleteTask('${list[i].id}')">
-            <i class="fa-solid fa-trash"></i>
-          </button>
-        </div>
-      </div>`;
+          <div class="task">
+          <div class="taskTitle">
+            <div class="title taskDone" >${list[i].taskContent}</div>
+          </div>
+          <div class="taskBtns">
+            <button class="checkBtn" onClick="toggleComplete('${list[i].id}')">
+            <i class="fa-sharp fa-solid fa-rotate-right rotate"></i>
+            </button>
+            <button class="removeBtn" onClick="deleteTask('${list[i].id}')">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>`;
     } else {
       resultHTML += `
-        <div class="task">
-        <div class="taskTitle">
-          <div class="title">${list[i].taskContent}</div>
-        </div>
-        <div class="taskBtns">
-          <button class="checkBtn" onClick="toggleComplete('${list[i].id}')">
-            <i class="fa-solid fa-check"></i>
-          </button>
-          <button class="removeBtn" onClick="deleteTask('${list[i].id}')">
-            <i class="fa-solid fa-trash"></i>
-          </button>
-        </div>
-      </div>`;
+          <div class="task">
+          <div class="taskTitle">
+            <div class="title">${list[i].taskContent}</div>
+          </div>
+          <div class="taskBtns">
+            <button class="checkBtn" onClick="toggleComplete('${list[i].id}')">
+              <i class="fa-solid fa-check"></i>
+            </button>
+            <button class="removeBtn" onClick="deleteTask('${list[i].id}')">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>`;
     }
   }
   if (taskBoard !== null) {
@@ -89,13 +81,15 @@ function addTask() {
   }
 }
 
-for (let i = 0; i < tabs.length; i++) {
-  tabs[i].addEventListener("click", function (e) {
-    filter(e);
-  });
-}
+addBtn?.addEventListener("click", addTask);
 
-function filter(e: any) {
+taskInput?.addEventListener("keyup", (e) => {
+  if (e.keyCode === 13) {
+    addTask();
+  }
+});
+
+function filter(e?: any) {
   if (e) {
     mode = e.target.id;
     if (mode == "all") {
@@ -112,4 +106,45 @@ function filter(e: any) {
       done?.classList.add("taskClick");
     }
   }
+
+  filterList = [];
+  if (mode == "ongoing") {
+    for (let i = 0; i < taskList.length; i++) {
+      if (taskList[i].isComplete == false) {
+        filterList.push(taskList[i]);
+      }
+    }
+  } else if (mode == "done") {
+    for (let i = 0; i < taskList.length; i++) {
+      if (taskList[i].isComplete) {
+        filterList.push(taskList[i]);
+      }
+    }
+  }
+  render();
+}
+
+function toggleComplete(id: string) {
+  for (let i = 0; i < taskList.length; i++) {
+    if (taskList[i].id == id) {
+      taskList[i].isComplete = !taskList[i].isComplete;
+      break;
+    }
+  }
+  filter();
+}
+
+function deleteTask(id: string) {
+  for (let i = 0; i < taskList.length; i++) {
+    if (taskList[i].id == id) {
+      taskList.splice(i, 1);
+    }
+  }
+  filter();
+}
+
+for (let i = 0; i < tabs.length; i++) {
+  tabs[i].addEventListener("click", function (e) {
+    filter(e);
+  });
 }
