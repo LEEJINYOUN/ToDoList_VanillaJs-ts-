@@ -81,3 +81,28 @@ function addTask() {
         render();
     }
 }
+for (let i = 0; i < tabs.length; i++) {
+    tabs[i].addEventListener("click", function (e) {
+        filter(e);
+    });
+}
+function filter(e) {
+    if (e) {
+        mode = e.target.id;
+        if (mode == "all") {
+            all === null || all === void 0 ? void 0 : all.classList.add("taskClick");
+            onGoing === null || onGoing === void 0 ? void 0 : onGoing.classList.remove("taskClick");
+            done === null || done === void 0 ? void 0 : done.classList.remove("taskClick");
+        }
+        else if (mode == "ongoing") {
+            all === null || all === void 0 ? void 0 : all.classList.remove("taskClick");
+            onGoing === null || onGoing === void 0 ? void 0 : onGoing.classList.add("taskClick");
+            done === null || done === void 0 ? void 0 : done.classList.remove("taskClick");
+        }
+        else if (mode == "done") {
+            all === null || all === void 0 ? void 0 : all.classList.remove("taskClick");
+            onGoing === null || onGoing === void 0 ? void 0 : onGoing.classList.remove("taskClick");
+            done === null || done === void 0 ? void 0 : done.classList.add("taskClick");
+        }
+    }
+}

@@ -88,3 +88,28 @@ function addTask() {
     render();
   }
 }
+
+for (let i = 0; i < tabs.length; i++) {
+  tabs[i].addEventListener("click", function (e) {
+    filter(e);
+  });
+}
+
+function filter(e: any) {
+  if (e) {
+    mode = e.target.id;
+    if (mode == "all") {
+      all?.classList.add("taskClick");
+      onGoing?.classList.remove("taskClick");
+      done?.classList.remove("taskClick");
+    } else if (mode == "ongoing") {
+      all?.classList.remove("taskClick");
+      onGoing?.classList.add("taskClick");
+      done?.classList.remove("taskClick");
+    } else if (mode == "done") {
+      all?.classList.remove("taskClick");
+      onGoing?.classList.remove("taskClick");
+      done?.classList.add("taskClick");
+    }
+  }
+}
